@@ -1,4 +1,5 @@
 // Dummy Data untuk Sistem Admin PAUD Yayasan Suci Sutjipto
+import { transformSiswaToNested } from './siswaTransform';
 
 export const tahunAjar = [
   { id: '1', label: '2024/2025', value: '2024/2025' },
@@ -190,7 +191,8 @@ export const kelas = [
   },
 ];
 
-export const siswa = [
+// Raw siswa data (will be transformed)
+const rawSiswaData = [
   // Kelas A - 12 siswa
   {
     id: '1',
@@ -594,6 +596,9 @@ export const siswa = [
     email: 'bayu.citra@email.com',
   },
 ];
+
+// Export transformed siswa with nested structure
+export const siswa = transformSiswaToNested(rawSiswaData);
 
 export const users = [
   {

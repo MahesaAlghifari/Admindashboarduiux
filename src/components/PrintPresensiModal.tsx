@@ -26,10 +26,13 @@ export function PrintPresensiModal({ isOpen, onClose, data }: PrintPresensiModal
   }, [data]);
 
   const siswaData = siswa
-    .filter((s) => !selectedKelas || s.kelas === selectedKelas)
+    .filter((s) => !selectedKelas || s.pesertaDidik?.kelas === selectedKelas)
     .slice(0, 15)
     .map((s, idx) => ({
-      ...s,
+      id: s.id,
+      nama: s.pesertaDidik?.nama || 'N/A',
+      nisn: s.pesertaDidik?.nisn || 'N/A',
+      kelas: s.pesertaDidik?.kelas || '-',
       status: idx < 12 ? 'Hadir' : idx === 12 ? 'Izin' : idx === 13 ? 'Sakit' : 'Alpha',
     }));
 

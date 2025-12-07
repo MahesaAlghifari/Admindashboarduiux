@@ -14,6 +14,9 @@ export function PenilaianTab() {
 
   const dataSiswa = siswa.slice(0, 10).map((s) => ({
     ...s,
+    nama: s.pesertaDidik?.nama || 'N/A',
+    nisn: s.pesertaDidik?.nisn || 'N/A',
+    kelas: s.pesertaDidik?.kelas || '-',
     guru: 'Rina Wulandari, S.Pd',
     statusPenilaian: s.id === '1' ? 'Final' : 'Draft',
   }));

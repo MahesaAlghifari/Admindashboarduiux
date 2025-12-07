@@ -60,10 +60,15 @@ export function PresensiTab() {
     },
   ];
 
-  const siswaPresensi = siswa.slice(0, 12).map((s, idx) => ({
-    ...s,
-    status: presensiStatus[s.id] || (idx < 10 ? 'Hadir' : idx === 10 ? 'Izin' : 'Sakit'),
-  }));
+  // Data siswa untuk presensi
+  const siswaPresensi = siswa
+    .filter(s => s.pesertaDidik?.kelas === selectedKelas)
+    .map((s) => ({
+      id: s.id,
+      nama: s.pesertaDidik?.nama || 'N/A',
+      nisn: s.pesertaDidik?.nisn || 'N/A',
+      kelas: s.pesertaDidik?.kelas || '-',
+    }));
 
   const filteredPresensi = selectedKelas 
     ? presensiData.filter(p => p.kelas === selectedKelas) 

@@ -19,7 +19,7 @@ export function KelasTab() {
 
   const handleView = (row: any) => {
     setSelectedItem(row);
-    const siswaInKelas = siswa.filter(s => s.kelasId === row.id).map(s => s.id);
+    const siswaInKelas = siswa.filter(s => s.pesertaDidik?.kelasId === row.id).map(s => s.id);
     setSelectedSiswaIds(siswaInKelas);
     setModalMode('view');
     setShowModal(true);
@@ -27,7 +27,7 @@ export function KelasTab() {
 
   const handleEdit = (row: any) => {
     setSelectedItem(row);
-    const siswaInKelas = siswa.filter(s => s.kelasId === row.id).map(s => s.id);
+    const siswaInKelas = siswa.filter(s => s.pesertaDidik?.kelasId === row.id).map(s => s.id);
     setSelectedSiswaIds(siswaInKelas);
     setModalMode('edit');
     setShowModal(true);
@@ -137,8 +137,8 @@ export function KelasTab() {
                 {siswaInKelas.map((s, idx) => (
                   <div key={s.id} className="flex items-center justify-between p-3 bg-[#F6F7F9] rounded-lg">
                     <div className="flex-1">
-                      <p className="text-sm sm:text-base">{idx + 1}. {s.nama}</p>
-                      <p className="text-xs sm:text-sm text-[#64748B]">NISN: {s.nisn}</p>
+                      <p className="text-sm sm:text-base">{idx + 1}. {s.peserta_didik?.nama_lengkap || s.nama || 'N/A'}</p>
+                      <p className="text-xs sm:text-sm text-[#64748B]">NISN: {s.peserta_didik?.nomor_induk || s.nisn || '-'}</p>
                     </div>
                     {modalMode === 'edit' && (
                       <button
@@ -174,8 +174,8 @@ export function KelasTab() {
                           className="w-4 h-4"
                         />
                         <div className="flex-1">
-                          <p className="text-sm sm:text-base">{s.nama}</p>
-                          <p className="text-xs sm:text-sm text-[#64748B]">NISN: {s.nisn} | Kelas saat ini: {s.kelas}</p>
+                          <p className="text-sm sm:text-base">{s.peserta_didik?.nama_lengkap || s.nama || 'N/A'}</p>
+                          <p className="text-xs sm:text-sm text-[#64748B]">NISN: {s.peserta_didik?.nomor_induk || s.nisn || '-'} | Kelas saat ini: {s.peserta_didik?.kelas || s.kelas || '-'}</p>
                         </div>
                       </label>
                     );

@@ -25,23 +25,33 @@ export function Siswa() {
     },
   ];
 
-  const filteredData = siswaData.filter((s) => {
+  // Transform data untuk DataTable dengan flatten structure
+  const transformedData = siswaData.map((s) => ({
+    ...s,
+    nama: s.pesertaDidik?.nama || 'N/A',
+    nisn: s.pesertaDidik?.nisn || 'N/A',
+    kelas: s.pesertaDidik?.kelas || '-',
+    status: s.pesertaDidik?.status || 'Aktif',
+    originalData: s, // Simpan data asli untuk modal
+  }));
+
+  const filteredData = transformedData.filter((s) => {
     const matchSearch =
-      s.nama.toLowerCase().includes(searchValue.toLowerCase()) ||
-      s.nisn.toLowerCase().includes(searchValue.toLowerCase());
+      s.nama?.toLowerCase().includes(searchValue.toLowerCase()) ||
+      s.nisn?.toLowerCase().includes(searchValue.toLowerCase());
     const matchKelas = !filterKelas || s.kelas === filterKelas;
     const matchStatus = !filterStatus || s.status === filterStatus;
     return matchSearch && matchKelas && matchStatus;
   });
 
   const handleView = (row: any) => {
-    setSelectedSiswa(row);
+    setSelectedSiswa(row.originalData || row);
     setModalMode('view');
     setShowModal(true);
   };
 
   const handleEdit = (row: any) => {
-    setSelectedSiswa(row);
+    setSelectedSiswa(row.originalData || row);
     setModalMode('edit');
     setShowModal(true);
   };
@@ -53,7 +63,8 @@ export function Siswa() {
   };
 
   const handleDelete = (row: any) => {
-    if (confirm(`Hapus siswa ${row.nama}?`)) {
+    const nama = row.originalData?.pesertaDidik?.nama || row.nama;
+    if (confirm(`Hapus siswa ${nama}?`)) {
       alert('Data siswa dihapus');
     }
   };
@@ -128,7 +139,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.nama}
+                  defaultValue={selectedSiswa?.pesertaDidik?.nama}
                   disabled={modalMode === 'view'}
                   placeholder="Nama lengkap siswa"
                 />
@@ -138,7 +149,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.nisn}
+                  defaultValue={selectedSiswa?.pesertaDidik?.nisn}
                   disabled={modalMode === 'view'}
                   placeholder="Nomor Induk Siswa Nasional"
                 />
@@ -148,7 +159,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.nik}
+                  defaultValue={selectedSiswa?.pesertaDidik?.nik}
                   disabled={modalMode === 'view'}
                   placeholder="Nomor Induk Kependudukan"
                 />
@@ -158,7 +169,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.tempatLahir}
+                  defaultValue={selectedSiswa?.pesertaDidik?.tempatLahir}
                   disabled={modalMode === 'view'}
                   placeholder="Kota tempat lahir"
                 />
@@ -168,7 +179,7 @@ export function Siswa() {
                 <input
                   type="date"
                   className="input-field"
-                  defaultValue={selectedSiswa?.tanggalLahir}
+                  defaultValue={selectedSiswa?.pesertaDidik?.tanggalLahir}
                   disabled={modalMode === 'view'}
                 />
               </div>
@@ -176,7 +187,7 @@ export function Siswa() {
                 <label className="block mb-2">Jenis Kelamin *</label>
                 <select
                   className="input-field"
-                  defaultValue={selectedSiswa?.jenisKelamin}
+                  defaultValue={selectedSiswa?.pesertaDidik?.jenisKelamin}
                   disabled={modalMode === 'view'}
                 >
                   <option value="">Pilih Jenis Kelamin</option>
@@ -188,7 +199,7 @@ export function Siswa() {
                 <label className="block mb-2">Agama *</label>
                 <select
                   className="input-field"
-                  defaultValue={selectedSiswa?.agama}
+                  defaultValue={selectedSiswa?.pesertaDidik?.agama}
                   disabled={modalMode === 'view'}
                 >
                   <option value="">Pilih Agama</option>
@@ -205,7 +216,7 @@ export function Siswa() {
                 <input
                   type="number"
                   className="input-field"
-                  defaultValue={selectedSiswa?.anakKe}
+                  defaultValue={selectedSiswa?.pesertaDidik?.anakKe}
                   disabled={modalMode === 'view'}
                   placeholder="1"
                   min="1"
@@ -217,7 +228,7 @@ export function Siswa() {
               <textarea
                 className="input-field"
                 rows={3}
-                defaultValue={selectedSiswa?.alamat}
+                defaultValue={selectedSiswa?.pesertaDidik?.alamat}
                 disabled={modalMode === 'view'}
                 placeholder="Alamat lengkap tempat tinggal"
               />
@@ -232,7 +243,7 @@ export function Siswa() {
                 <label className="block mb-2">Kelas *</label>
                 <select
                   className="input-field"
-                  defaultValue={selectedSiswa?.kelas}
+                  defaultValue={selectedSiswa?.pesertaDidik?.kelas}
                   disabled={modalMode === 'view'}
                 >
                   <option value="">Pilih Kelas</option>
@@ -247,7 +258,7 @@ export function Siswa() {
                 <label className="block mb-2">Tahun Ajar *</label>
                 <select
                   className="input-field"
-                  defaultValue={selectedSiswa?.tahunAjar}
+                  defaultValue={selectedSiswa?.pesertaDidik?.tahunAjar}
                   disabled={modalMode === 'view'}
                 >
                   <option value="">Pilih Tahun Ajar</option>
@@ -263,7 +274,7 @@ export function Siswa() {
                 <input
                   type="date"
                   className="input-field"
-                  defaultValue={selectedSiswa?.tanggalMasuk}
+                  defaultValue={selectedSiswa?.pesertaDidik?.tanggalMasuk}
                   disabled={modalMode === 'view'}
                 />
               </div>
@@ -271,7 +282,7 @@ export function Siswa() {
                 <label className="block mb-2">Status *</label>
                 <select
                   className="input-field"
-                  defaultValue={selectedSiswa?.status}
+                  defaultValue={selectedSiswa?.pesertaDidik?.status}
                   disabled={modalMode === 'view'}
                 >
                   <option value="">Pilih Status</option>
@@ -293,7 +304,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.namaAyah}
+                  defaultValue={selectedSiswa?.orangTuaWali?.ayah?.nama}
                   disabled={modalMode === 'view'}
                   placeholder="Nama lengkap ayah"
                 />
@@ -303,7 +314,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.pekerjaanAyah}
+                  defaultValue={selectedSiswa?.orangTuaWali?.ayah?.pekerjaan}
                   disabled={modalMode === 'view'}
                   placeholder="Pekerjaan ayah"
                 />
@@ -313,7 +324,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.namaIbu}
+                  defaultValue={selectedSiswa?.orangTuaWali?.ibu?.nama}
                   disabled={modalMode === 'view'}
                   placeholder="Nama lengkap ibu"
                 />
@@ -323,7 +334,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.pekerjaanIbu}
+                  defaultValue={selectedSiswa?.orangTuaWali?.ibu?.pekerjaan}
                   disabled={modalMode === 'view'}
                   placeholder="Pekerjaan ibu"
                 />
@@ -333,7 +344,7 @@ export function Siswa() {
                 <input
                   type="tel"
                   className="input-field"
-                  defaultValue={selectedSiswa?.noHpOrtu}
+                  defaultValue={selectedSiswa?.orangTuaWali?.teleponOrtu}
                   disabled={modalMode === 'view'}
                   placeholder="+62 812-xxxx-xxxx"
                 />
@@ -343,7 +354,7 @@ export function Siswa() {
                 <input
                   type="email"
                   className="input-field"
-                  defaultValue={selectedSiswa?.emailOrtu}
+                  defaultValue={selectedSiswa?.orangTuaWali?.emailOrtu}
                   disabled={modalMode === 'view'}
                   placeholder="email@example.com"
                 />

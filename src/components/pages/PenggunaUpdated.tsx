@@ -19,28 +19,33 @@ export function PenggunaUpdated() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Gabungkan data siswa dan karyawan
-  const allUsers = [
-    ...siswa.map((s) => ({
-      ...s,
-      type: 'siswa' as UserType,
-      username: s.nisn,
-      status: s.status,
-      email: s.email || '-',
-    })),
-    ...karyawan.map((k) => ({
-      ...k,
-      type: 'karyawan' as UserType,
-      username: k.nip,
-      status: 'Aktif', // Default semua karyawan aktif
-      email: k.email,
-    })),
-  ];
+  const siswaUsers = siswa.map((s) => ({
+    id: s.id,
+    nama: s.peserta_didik?.nama_lengkap || s.nama || 'N/A',
+    username: s.peserta_didik?.nomor_induk || s.nisn || 'N/A',
+    email: s.email || '-',
+    tipe: 'siswa' as const,
+    status: 'Aktif',
+    originalData: s,
+  }));
+
+  const karyawanUsers = karyawan.map((k) => ({
+    id: k.id,
+    nama: k.nama || 'N/A',
+    username: k.nip,
+    email: k.email,
+    tipe: 'karyawan' as const,
+    status: 'Aktif', // Default semua karyawan aktif
+    originalData: k,
+  }));
+
+  const allUsers = [...siswaUsers, ...karyawanUsers];
 
   // Filter data
   const filteredData = allUsers.filter((user) => {
     const matchSearch = user.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.username.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchType = filterType === 'semua' || user.type === filterType;
+    const matchType = filterType === 'semua' || user.tipe === filterType;
     const matchStatus = filterStatus === 'semua' || user.status.toLowerCase() === filterStatus;
     return matchSearch && matchType && matchStatus;
   });
@@ -59,7 +64,7 @@ export function PenggunaUpdated() {
       label: 'Email',
     },
     {
-      key: 'type',
+      key: 'tipe',
       label: 'Tipe Pengguna',
       render: (value: string) => (
         <span className={`px-3 py-1 rounded-full text-xs ${
@@ -245,50 +250,57 @@ export function PenggunaUpdated() {
             <p className="text-sm text-[#64748B]">Pengguna</p>
             <p className="text-[#0F172A]">{selectedUser?.nama}</p>
             <p className="text-sm text-[#64748B] mt-1">
-              {selectedUser?.type === 'siswa' ? 'Siswa' : 'Karyawan'} - {selectedUser?.username}
+              {selectedUser?.tipe === 'siswa' ? 'Siswa' : 'Karyawan'} - {selectedUser?.username}
             </p>
           </div>
 
           <div>
             <label className="block mb-2 text-sm">Password Baru *</label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              className="input-field"
-              placeholder="Masukkan password baru"
-              required
-            />
-            <button
-              type="button"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#64748B] w-5 h-5"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <EyeOff className="w-5 h-5" />
-              ) : (
-                <Eye className="w-5 h-5" />
-              )}
-            </button>
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                className="input-field pr-10"
+                placeholder="Masukkan password baru"
+                required
+                minLength={6}
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#64748B]"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           <div>
             <label className="block mb-2 text-sm">Konfirmasi Password *</label>
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              className="input-field"
-              placeholder="Konfirmasi password baru"
-              required
-            />
-            <button
-              type="button"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#64748B] w-5 h-5"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? (
-                <EyeOff className="w-5 h-5" />
-              ) : (
-                <Eye className="w-5 h-5" />
-              )}
-            </button>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                className="input-field pr-10"
+                placeholder="Konfirmasi password baru"
+                required
+                minLength={6}
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#64748B]"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+            <p className="text-xs text-[#64748B] mt-1">Minimal 6 karakter</p>
           </div>
 
           <div className="flex gap-3 justify-end pt-4">
@@ -337,7 +349,7 @@ export function PenggunaUpdated() {
             <p className="text-sm text-[#64748B]">Pengguna</p>
             <p className="text-[#0F172A]">{selectedUser?.nama}</p>
             <p className="text-sm text-[#64748B] mt-1">
-              {selectedUser?.type === 'siswa' ? 'Siswa' : 'Karyawan'} - {selectedUser?.username}
+              {selectedUser?.tipe === 'siswa' ? 'Siswa' : 'Karyawan'} - {selectedUser?.username}
             </p>
           </div>
 
@@ -427,7 +439,7 @@ export function PenggunaUpdated() {
             <p className="text-sm text-[#64748B]">Pengguna</p>
             <p className="text-[#0F172A]">{selectedUser?.nama}</p>
             <p className="text-sm text-[#64748B] mt-1">
-              {selectedUser?.type === 'siswa' ? 'Siswa' : 'Karyawan'} - {selectedUser?.username}
+              {selectedUser?.tipe === 'siswa' ? 'Siswa' : 'Karyawan'} - {selectedUser?.username}
             </p>
           </div>
 
@@ -481,7 +493,7 @@ export function PenggunaUpdated() {
             <div>
               <h3 className="text-xl">{selectedUser?.nama}</h3>
               <p className="text-sm opacity-90">
-                {selectedUser?.type === 'siswa' ? 'Siswa' : 'Karyawan'}
+                {selectedUser?.tipe === 'siswa' ? 'Siswa' : 'Karyawan'}
               </p>
             </div>
           </div>
@@ -495,7 +507,7 @@ export function PenggunaUpdated() {
 
             <div className="p-4 bg-[#F6F7F9] rounded-lg">
               <label className="block mb-1 text-sm text-[#64748B]">
-                {selectedUser?.type === 'siswa' ? 'NISN' : 'NIP'}
+                {selectedUser?.tipe === 'siswa' ? 'NISN' : 'NIP'}
               </label>
               <p className="text-[#0F172A]">{selectedUser?.username}</p>
             </div>
@@ -508,11 +520,11 @@ export function PenggunaUpdated() {
             <div className="p-4 bg-[#F6F7F9] rounded-lg">
               <label className="block mb-1 text-sm text-[#64748B]">Tipe Pengguna</label>
               <span className={`inline-block px-3 py-1 rounded-full text-xs ${
-                selectedUser?.type === 'siswa' 
+                selectedUser?.tipe === 'siswa' 
                   ? 'bg-blue-100 text-blue-700' 
                   : 'bg-purple-100 text-purple-700'
               }`}>
-                {selectedUser?.type === 'siswa' ? 'Siswa' : 'Karyawan'}
+                {selectedUser?.tipe === 'siswa' ? 'Siswa' : 'Karyawan'}
               </span>
             </div>
 
@@ -527,14 +539,14 @@ export function PenggunaUpdated() {
               </span>
             </div>
 
-            {selectedUser?.type === 'siswa' && (
+            {selectedUser?.tipe === 'siswa' && (
               <div className="p-4 bg-[#F6F7F9] rounded-lg">
                 <label className="block mb-1 text-sm text-[#64748B]">Kelas</label>
                 <p className="text-[#0F172A]">{selectedUser?.kelas || '-'}</p>
               </div>
             )}
 
-            {selectedUser?.type === 'karyawan' && (
+            {selectedUser?.tipe === 'karyawan' && (
               <div className="p-4 bg-[#F6F7F9] rounded-lg">
                 <label className="block mb-1 text-sm text-[#64748B]">Jabatan</label>
                 <p className="text-[#0F172A]">{selectedUser?.jabatan || '-'}</p>

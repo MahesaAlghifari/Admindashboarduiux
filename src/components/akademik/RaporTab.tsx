@@ -10,6 +10,9 @@ export function RaporTab() {
 
   const raporData = siswa.map((s) => ({
     ...s,
+    nama: s.pesertaDidik?.nama || 'N/A',
+    nisn: s.pesertaDidik?.nisn || 'N/A',
+    kelas: s.pesertaDidik?.kelas || '-',
     tahunAjar: '2024/2025',
     semester: 'I & II',
     status: s.id === '1' || s.id === '13' ? 'Sudah Terbit' : 'Belum Terbit',

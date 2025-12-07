@@ -25,23 +25,33 @@ export function Siswa() {
     },
   ];
 
-  const filteredData = siswaData.filter((s) => {
+  // Transform data untuk DataTable dengan flatten structure
+  const transformedData = siswaData.map((s) => ({
+    ...s,
+    nama: s.peserta_didik?.nama_lengkap || s.nama || 'N/A',
+    nisn: s.peserta_didik?.nomor_induk || s.nisn || 'N/A',
+    kelas: s.peserta_didik?.kelas || s.kelas || '-',
+    status: s.status || 'Aktif',
+    originalData: s, // Simpan data asli untuk modal
+  }));
+
+  const filteredData = transformedData.filter((s) => {
     const matchSearch =
-      s.nama.toLowerCase().includes(searchValue.toLowerCase()) ||
-      s.nisn.toLowerCase().includes(searchValue.toLowerCase());
+      s.nama?.toLowerCase().includes(searchValue.toLowerCase()) ||
+      s.nisn?.toLowerCase().includes(searchValue.toLowerCase());
     const matchKelas = !filterKelas || s.kelas === filterKelas;
     const matchStatus = !filterStatus || s.status === filterStatus;
     return matchSearch && matchKelas && matchStatus;
   });
 
   const handleView = (row: any) => {
-    setSelectedSiswa(row);
+    setSelectedSiswa(row.originalData || row);
     setModalMode('view');
     setShowModal(true);
   };
 
   const handleEdit = (row: any) => {
-    setSelectedSiswa(row);
+    setSelectedSiswa(row.originalData || row);
     setModalMode('edit');
     setShowModal(true);
   };
@@ -53,7 +63,8 @@ export function Siswa() {
   };
 
   const handleDelete = (row: any) => {
-    if (confirm(`Hapus siswa ${row.nama}?`)) {
+    const nama = row.originalData?.pesertaDidik?.nama || row.nama;
+    if (confirm(`Hapus siswa ${nama}?`)) {
       alert('Data siswa dihapus');
     }
   };
@@ -128,29 +139,29 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.nama}
+                  defaultValue={selectedSiswa?.peserta_didik?.nama_lengkap || selectedSiswa?.nama}
                   disabled={modalMode === 'view'}
                   placeholder="Nama lengkap siswa"
                 />
               </div>
               <div>
-                <label className="block mb-2">NISN *</label>
+                <label className="block mb-2">Nama Panggilan</label>
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.nisn}
+                  defaultValue={selectedSiswa?.peserta_didik?.nama_panggilan}
                   disabled={modalMode === 'view'}
-                  placeholder="Nomor Induk Siswa Nasional"
+                  placeholder="Nama panggilan"
                 />
               </div>
               <div>
-                <label className="block mb-2">NIK *</label>
+                <label className="block mb-2">Nomor Induk *</label>
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.nik}
+                  defaultValue={selectedSiswa?.peserta_didik?.nomor_induk || selectedSiswa?.nisn}
                   disabled={modalMode === 'view'}
-                  placeholder="Nomor Induk Kependudukan"
+                  placeholder="Nomor Induk Siswa"
                 />
               </div>
               <div>
@@ -158,7 +169,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.tempatLahir}
+                  defaultValue={selectedSiswa?.peserta_didik?.tempat_lahir || selectedSiswa?.tempatLahir}
                   disabled={modalMode === 'view'}
                   placeholder="Kota tempat lahir"
                 />
@@ -168,7 +179,7 @@ export function Siswa() {
                 <input
                   type="date"
                   className="input-field"
-                  defaultValue={selectedSiswa?.tanggalLahir}
+                  defaultValue={selectedSiswa?.peserta_didik?.tanggal_lahir || selectedSiswa?.tanggalLahir}
                   disabled={modalMode === 'view'}
                 />
               </div>
@@ -176,7 +187,7 @@ export function Siswa() {
                 <label className="block mb-2">Jenis Kelamin *</label>
                 <select
                   className="input-field"
-                  defaultValue={selectedSiswa?.jenisKelamin}
+                  defaultValue={selectedSiswa?.peserta_didik?.jenis_kelamin || selectedSiswa?.jenisKelamin}
                   disabled={modalMode === 'view'}
                 >
                   <option value="">Pilih Jenis Kelamin</option>
@@ -188,7 +199,7 @@ export function Siswa() {
                 <label className="block mb-2">Agama *</label>
                 <select
                   className="input-field"
-                  defaultValue={selectedSiswa?.agama}
+                  defaultValue={selectedSiswa?.peserta_didik?.agama}
                   disabled={modalMode === 'view'}
                 >
                   <option value="">Pilih Agama</option>
@@ -201,26 +212,163 @@ export function Siswa() {
                 </select>
               </div>
               <div>
-                <label className="block mb-2">Anak Ke</label>
+                <label className="block mb-2">Kewarganegaraan *</label>
                 <input
-                  type="number"
+                  type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.anakKe}
+                  defaultValue={selectedSiswa?.peserta_didik?.kewarganegaraan || 'Indonesia'}
                   disabled={modalMode === 'view'}
-                  placeholder="1"
-                  min="1"
+                  placeholder="Indonesia"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Bahasa Sehari-hari</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.bahasa_sehari_hari}
+                  disabled={modalMode === 'view'}
+                  placeholder="Indonesia"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Telepon/HP</label>
+                <input
+                  type="tel"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.telepon_hp || selectedSiswa?.teleponOrtu}
+                  disabled={modalMode === 'view'}
+                  placeholder="+62 812-xxxx-xxxx"
                 />
               </div>
             </div>
             <div className="mt-4">
-              <label className="block mb-2">Alamat Lengkap *</label>
+              <label className="block mb-2">Alamat Rumah *</label>
               <textarea
                 className="input-field"
                 rows={3}
-                defaultValue={selectedSiswa?.alamat}
+                defaultValue={selectedSiswa?.peserta_didik?.alamat_rumah || selectedSiswa?.alamat}
                 disabled={modalMode === 'view'}
                 placeholder="Alamat lengkap tempat tinggal"
               />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+              <div>
+                <label className="block mb-2">Status Tempat Tinggal</label>
+                <select
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.status_tempat_tinggal}
+                  disabled={modalMode === 'view'}
+                >
+                  <option value="">Pilih Status</option>
+                  <option value="Rumah Sendiri">Rumah Sendiri</option>
+                  <option value="Rumah Orang Tua">Rumah Orang Tua</option>
+                  <option value="Rumah Sewa">Rumah Sewa</option>
+                  <option value="Rumah Dinas">Rumah Dinas</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2">Jarak ke Sekolah</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.jarak_ke_sekolah}
+                  disabled={modalMode === 'view'}
+                  placeholder="2 km"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Jumlah Saudara */}
+          <div>
+            <h4 className="mb-4">Jumlah Saudara</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block mb-2">Kandung</label>
+                <input
+                  type="number"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.jumlah_saudara?.kandung || '0'}
+                  disabled={modalMode === 'view'}
+                  min="0"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Tiri</label>
+                <input
+                  type="number"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.jumlah_saudara?.tiri || '0'}
+                  disabled={modalMode === 'view'}
+                  min="0"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Angkat</label>
+                <input
+                  type="number"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.jumlah_saudara?.angkat || '0'}
+                  disabled={modalMode === 'view'}
+                  min="0"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Keadaan Jasmani */}
+          <div>
+            <h4 className="mb-4">Keadaan Jasmani</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+              <div>
+                <label className="block mb-2">Berat Badan (kg)</label>
+                <input
+                  type="number"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.keadaan_jasmani?.berat_badan}
+                  disabled={modalMode === 'view'}
+                  placeholder="18"
+                  min="0"
+                  step="0.1"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Tinggi Badan (cm)</label>
+                <input
+                  type="number"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.keadaan_jasmani?.tinggi_badan}
+                  disabled={modalMode === 'view'}
+                  placeholder="105"
+                  min="0"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Golongan Darah</label>
+                <select
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.keadaan_jasmani?.golongan_darah}
+                  disabled={modalMode === 'view'}
+                >
+                  <option value="">Pilih</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="AB">AB</option>
+                  <option value="O">O</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2">Riwayat Penyakit</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.peserta_didik?.keadaan_jasmani?.riwayat_penyakit}
+                  disabled={modalMode === 'view'}
+                  placeholder="-"
+                />
+              </div>
             </div>
           </div>
 
@@ -232,7 +380,7 @@ export function Siswa() {
                 <label className="block mb-2">Kelas *</label>
                 <select
                   className="input-field"
-                  defaultValue={selectedSiswa?.kelas}
+                  defaultValue={selectedSiswa?.peserta_didik?.kelas || selectedSiswa?.kelas}
                   disabled={modalMode === 'view'}
                 >
                   <option value="">Pilih Kelas</option>
@@ -244,26 +392,11 @@ export function Siswa() {
                 </select>
               </div>
               <div>
-                <label className="block mb-2">Tahun Ajar *</label>
-                <select
-                  className="input-field"
-                  defaultValue={selectedSiswa?.tahunAjar}
-                  disabled={modalMode === 'view'}
-                >
-                  <option value="">Pilih Tahun Ajar</option>
-                  {tahunAjar.map((ta) => (
-                    <option key={ta.value} value={ta.value}>
-                      {ta.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block mb-2">Tanggal Masuk *</label>
+                <label className="block mb-2">Tanggal Diterima</label>
                 <input
                   type="date"
                   className="input-field"
-                  defaultValue={selectedSiswa?.tanggalMasuk}
+                  defaultValue={selectedSiswa?.perkembangan_peserta_didik?.diterima_di_lembaga_ini?.tanggal_diterima}
                   disabled={modalMode === 'view'}
                 />
               </div>
@@ -281,21 +414,41 @@ export function Siswa() {
                   <option value="Keluar">Keluar</option>
                 </select>
               </div>
+              <div>
+                <label className="block mb-2">Pendidikan Sebelumnya</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.perkembangan_peserta_didik?.pendidikan_sebelumnya}
+                  disabled={modalMode === 'view'}
+                  placeholder="-"
+                />
+              </div>
             </div>
           </div>
 
           {/* Informasi Orang Tua */}
           <div>
-            <h4 className="mb-4">Informasi Orang Tua/Wali</h4>
+            <h4 className="mb-4">Informasi Orang Tua</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-2">Nama Ayah *</label>
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.namaAyah}
+                  defaultValue={selectedSiswa?.orang_tua?.ayah?.nama || selectedSiswa?.namaAyah}
                   disabled={modalMode === 'view'}
                   placeholder="Nama lengkap ayah"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Pendidikan Ayah</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.orang_tua?.ayah?.pendidikan}
+                  disabled={modalMode === 'view'}
+                  placeholder="S1/D3/SMA/dll"
                 />
               </div>
               <div>
@@ -303,7 +456,7 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.pekerjaanAyah}
+                  defaultValue={selectedSiswa?.orang_tua?.ayah?.pekerjaan}
                   disabled={modalMode === 'view'}
                   placeholder="Pekerjaan ayah"
                 />
@@ -313,9 +466,19 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.namaIbu}
+                  defaultValue={selectedSiswa?.orang_tua?.ibu?.nama || selectedSiswa?.namaIbu}
                   disabled={modalMode === 'view'}
                   placeholder="Nama lengkap ibu"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Pendidikan Ibu</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.orang_tua?.ibu?.pendidikan}
+                  disabled={modalMode === 'view'}
+                  placeholder="S1/D3/SMA/dll"
                 />
               </div>
               <div>
@@ -323,29 +486,56 @@ export function Siswa() {
                 <input
                   type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.pekerjaanIbu}
+                  defaultValue={selectedSiswa?.orang_tua?.ibu?.pekerjaan}
                   disabled={modalMode === 'view'}
                   placeholder="Pekerjaan ibu"
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Informasi Wali (jika ada) */}
+          <div>
+            <h4 className="mb-4">Informasi Wali (Optional)</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-2">No. HP Orang Tua *</label>
+                <label className="block mb-2">Nama Wali</label>
                 <input
-                  type="tel"
+                  type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.noHpOrtu}
+                  defaultValue={selectedSiswa?.wali?.nama}
                   disabled={modalMode === 'view'}
-                  placeholder="+62 812-xxxx-xxxx"
+                  placeholder="Nama lengkap wali"
                 />
               </div>
               <div>
-                <label className="block mb-2">Email Orang Tua</label>
+                <label className="block mb-2">Hubungan Keluarga</label>
                 <input
-                  type="email"
+                  type="text"
                   className="input-field"
-                  defaultValue={selectedSiswa?.emailOrtu}
+                  defaultValue={selectedSiswa?.wali?.hubungan_keluarga}
                   disabled={modalMode === 'view'}
-                  placeholder="email@example.com"
+                  placeholder="Kakek/Nenek/Paman/dll"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Pendidikan Wali</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.wali?.pendidikan_tertinggi}
+                  disabled={modalMode === 'view'}
+                  placeholder="S1/D3/SMA/dll"
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Pekerjaan Wali</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  defaultValue={selectedSiswa?.wali?.pekerjaan}
+                  disabled={modalMode === 'view'}
+                  placeholder="Pekerjaan wali"
                 />
               </div>
             </div>
