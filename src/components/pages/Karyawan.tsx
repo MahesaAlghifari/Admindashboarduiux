@@ -1,1 +1,0 @@
-export { Karyawan } from './KaryawanNew';

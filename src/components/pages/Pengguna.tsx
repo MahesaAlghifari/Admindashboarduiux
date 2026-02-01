@@ -1,1 +1,0 @@
-export { Pengguna } from './PenggunaNew';
