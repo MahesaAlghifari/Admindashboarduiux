@@ -12,7 +12,7 @@ export const DATA_STAFF_DUMMY = [
       agama: "Islam",
       pendidikan_terakhir: "S1", // Sarjana Pendidikan Luar Sekolah, Universitas Singaperbangsa Karawang (2021)
       alamat_lengkap: "Jl. Pendidikan Indah No. 1, Bandung",
-      foto: "https://i.pravatar.cc/150?u=201",
+      foto: "https://ibb.co.com/ksK9vrGD",
     },
     kepegawaian: {
       jabatan: "Kepala Sekolah",
@@ -37,7 +37,7 @@ export const DATA_STAFF_DUMMY = [
       agama: "Islam",
       pendidikan_terakhir: "S1",
       alamat_lengkap: "Komp. Duta Garden Blok A2",
-      foto: "https://i.pravatar.cc/150?u=202",
+      foto: "https://ibb.co.com/ksK9vrGD",
     },
     kepegawaian: {
       jabatan: "Ketua Yayasan",
@@ -62,7 +62,7 @@ export const DATA_STAFF_DUMMY = [
       agama: "Islam",
       pendidikan_terakhir: "S1", // Sarjana Pendidikan Agama Islam (PAI), Universitas Ibn Khaldun Bogor (2025)
       alamat_lengkap: "Jl. Kedung Halang No. 12, Bogor",
-      foto: "https://i.pravatar.cc/150?u=203",
+      foto: "https://ibb.co.com/ksK9vrGD",
     },
     kepegawaian: {
       jabatan: "Guru",
@@ -87,7 +87,7 @@ export const DATA_STAFF_DUMMY = [
       agama: "Islam",
       pendidikan_terakhir: "S1", // Sarjana Pendidikan Guru Sekolah Dasar (PGSD), Universitas Pakuan Bogor (2024)
       alamat_lengkap: "Jl. Pakuan No. 5, Bogor",
-      foto: "https://i.pravatar.cc/150?u=211",
+      foto: "https://ibb.co.com/ksK9vrGD",
     },
     kepegawaian: {
       jabatan: "Guru",
@@ -112,7 +112,7 @@ export const DATA_STAFF_DUMMY = [
       agama: "Islam",
       pendidikan_terakhir: "D3",
       alamat_lengkap: "Gg. Kancil No. 5",
-      foto: "https://i.pravatar.cc/150?u=204",
+      foto: "https://ibb.co.com/ksK9vrGD",
     },
     kepegawaian: {
       jabatan: "Staff",
