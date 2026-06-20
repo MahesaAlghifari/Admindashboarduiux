@@ -11,15 +11,8 @@ import {
   PaperAirplaneIcon
 } from "@heroicons/react/24/outline";
 
-// --- DATA DUMMY TAGIHAN SISWA ---
-const DUMMY_INVOICES = [
-  { id: "INV-24001", student: "Budi Santoso", class: "TK-A", type: "SPP Februari 2026", amount: 350000, dueDate: "2026-02-10", status: "paid" },
-  { id: "INV-24002", student: "Siti Aminah", class: "TK-B", type: "SPP Februari 2026", amount: 350000, dueDate: "2026-02-10", status: "unpaid" },
-  { id: "INV-24003", student: "Rizky Billar", class: "Playgroup", type: "Uang Pangkal", amount: 1500000, dueDate: "2026-01-20", status: "overdue" },
-  { id: "INV-24004", student: "Dewi Persik", class: "TK-A", type: "Seragam", amount: 450000, dueDate: "2026-02-05", status: "paid" },
-  { id: "INV-24005", student: "Joko Anwar", class: "TK-B", type: "SPP Februari 2026", amount: 350000, dueDate: "2026-02-10", status: "unpaid" },
-  { id: "INV-24006", student: "Raffi Ahmad", class: "Playgroup", type: "SPP Januari 2026", amount: 350000, dueDate: "2026-01-10", status: "overdue" },
-];
+// --- IMPORT DATA DUMMY DARI FILE GLOBAL ---
+import { DUMMY_INVOICES } from "../../../data/dummyKeuangan";
 
 const CLASS_OPTIONS = ["Semua Kelas", "Playgroup", "TK-A", "TK-B"];
 

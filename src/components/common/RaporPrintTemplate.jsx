@@ -1,48 +1,36 @@
 import React, { useMemo } from "react";
 import { CheckIcon } from "@heroicons/react/24/solid";
 
-// --- IMPORT DATA DUMMY ---
 import { DATA_PEMBELAJARAN_DUMMY } from "../../data/dummyPembelajaran";
 import { DATA_STAFF_DUMMY } from "../../data/dummyStaff";
 import { DATA_KELAS_DUMMY } from "../../data/dummySiswa";
 
 const SCALES = ["BB", "MB", "BSH", "BSB"];
 
-// ============================================================================
-// KOMPONEN UTAMA
-// ============================================================================
 export const RaporPrintTemplate = React.forwardRef(({ student, data }, ref) => {
   if (!student || !data) return <div ref={ref}></div>;
 
-  // --- 1. AKSES DATA SISWA ---
   const s = student.peserta_didik || {};
   const ayah = student.orang_tua_kandung?.ayah || {};
   const ibu = student.orang_tua_kandung?.ibu || {};
   const terima = student.diterima_di_lembaga || {};
 
-  // --- 2. LOGIKA KEPALA SEKOLAH ---
   const headmaster = DATA_STAFF_DUMMY.find(
     (staff) => staff.kepegawaian?.jabatan === "Kepala Sekolah"
   );
   const kepsekNama = headmaster?.pribadi?.nama_lengkap || ".........................";
   const kepsekNIP = headmaster?.pribadi?.nip || "-";
 
-  // --- 3. LOGIKA GURU KELAS ---
   const siswaKelas = DATA_KELAS_DUMMY.find((k) => k.id === student.class_id);
   const guruKelas = DATA_STAFF_DUMMY.find((staff) => staff.id === siswaKelas?.wali_kelas_id);
   const guruNama = guruKelas?.pribadi?.nama_lengkap || ".........................";
   const guruNIP = guruKelas?.pribadi?.nip || "-";
 
-  // --- 4. TRANSFORM DATA INDIKATOR ---
   const INDICATORS = useMemo(() => {
     const grouped = {};
     const orderMap = {
-      "Nilai Agama & Moral": 1,
-      "Fisik Motorik": 2,
-      "Kognitif": 3,
-      "Bahasa": 4,
-      "Sosial Emosional": 5,
-      "Seni": 6
+      "Nilai Agama & Moral": 1, "Fisik Motorik": 2, "Kognitif": 3,
+      "Bahasa": 4, "Sosial Emosional": 5, "Seni": 6
     };
 
     DATA_PEMBELAJARAN_DUMMY.forEach(item => {
@@ -52,13 +40,9 @@ export const RaporPrintTemplate = React.forwardRef(({ student, data }, ref) => {
 
     return Object.keys(grouped)
       .sort((a, b) => (orderMap[a] || 99) - (orderMap[b] || 99))
-      .map(key => ({
-        category: key.toUpperCase(),
-        items: grouped[key]
-      }));
+      .map(key => ({ category: key.toUpperCase(), items: grouped[key] }));
   }, []);
 
-  // --- 5. SEMESTER LOGIC ---
   const today = new Date();
   const currentMonth = today.getMonth(); 
   const isSemester1 = currentMonth >= 6; 
@@ -70,7 +54,6 @@ export const RaporPrintTemplate = React.forwardRef(({ student, data }, ref) => {
 
   const currentData = data[semesterKey] || {};
 
-  // --- 6. STATISTICS LOGIC ---
   const calculateStatistics = () => {
     const totalIndicators = INDICATORS.reduce((acc, curr) => acc + curr.items.length, 0);
     const stats = { BB: 0, MB: 0, BSH: 0, BSB: 0 };
@@ -92,40 +75,13 @@ export const RaporPrintTemplate = React.forwardRef(({ student, data }, ref) => {
 
   return (
     <div ref={ref} className="bg-white text-slate-900 font-sans text-sm print-container">
-      
-      {/* ============================================================================
-          STYLESHEET: VERSI FINAL (MARGIN RAPI & HALAMAN BERSAMBUNG AMAN)
-         ============================================================================ */}
       <style type="text/css" media="print">
         {`
-          /* 1. Atur Margin Kertas yang Sebenarnya */
-          @page { 
-            size: A4; 
-            margin: 2.5cm; /* Ini akan memberi jarak putih 2.5cm di SEMUA halaman */
-          }
-          
-          body { 
-            -webkit-print-color-adjust: exact; 
-            print-color-adjust: exact; 
-            font-family: 'Arial', 'Helvetica', sans-serif;
-            color: #1f2937;
-            margin: 0; 
-            padding: 0;
-          }
-
-          /* 2. Container Konten (Full Width karena margin sudah diatur @page) */
-          .print-container { 
-            width: 100%;
-            margin: 0;
-            padding: 0; /* Tidak perlu padding lagi */
-            line-height: 1.5; 
-          }
-
-          /* --- PENTING: PENGATURAN HALAMAN --- */
+          @page { size: A4; margin: 2.5cm; }
+          body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-family: 'Arial', 'Helvetica', sans-serif; color: #1f2937; margin: 0; padding: 0; }
+          .print-container { width: 100%; margin: 0; padding: 0; line-height: 1.5; }
           .page-break { page-break-before: always; }
           .break-inside-avoid { page-break-inside: avoid; }
-          
-          /* --- TYPOGRAPHY & COMPONENTS --- */
           .text-center { text-align: center; }
           .text-right { text-align: right; }
           .text-justify { text-align: justify; }
@@ -137,7 +93,6 @@ export const RaporPrintTemplate = React.forwardRef(({ student, data }, ref) => {
           .text-lg { font-size: 14pt; }
           .text-xl { font-size: 18pt; }
           .tracking-wide { letter-spacing: 0.05em; }
-          
           .flex { display: flex; }
           .justify-between { justify-content: space-between; }
           .mb-4 { margin-bottom: 1rem; }
@@ -146,22 +101,12 @@ export const RaporPrintTemplate = React.forwardRef(({ student, data }, ref) => {
           .gap-4 { gap: 1rem; }
           .w-full { width: 100%; }
           .w-half { width: 50%; }
-
-          .section-title { 
-            font-size: 11pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-            border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 15px; margin-top: 20px;
-          }
-          .main-title {
-            font-size: 16pt; font-weight: 800; text-align: center; margin-bottom: 40px; letter-spacing: 2px;
-          }
-          
-          /* TABLES */
+          .section-title { font-size: 11pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 15px; margin-top: 20px; }
+          .main-title { font-size: 16pt; font-weight: 800; text-align: center; margin-bottom: 40px; letter-spacing: 2px; }
           table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
           th { background-color: #f3f4f6 !important; font-weight: 700; text-align: center; padding: 8px 10px; border: 1px solid #d1d5db; font-size: 9pt; text-transform: uppercase; }
           td { padding: 8px 10px; vertical-align: top; border: 1px solid #d1d5db; }
           .no-border-table td { border: none; padding: 4px 0; }
-          
-          /* BOXES & LINES */
           .photo-box { width: 30mm; height: 40mm; border: 1px dashed #9ca3af; display: flex; align-items: center; justify-content: center; background-color: #f9fafb; color: #9ca3af; font-size: 9pt; }
           .box-summary { border: 1px solid #000; padding: 20px; background-color: #fff; }
           .signature-line { border-bottom: 1px solid #000; width: 200px; margin: 0 auto; margin-top: 70px; }

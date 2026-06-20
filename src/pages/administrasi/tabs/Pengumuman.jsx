@@ -12,39 +12,14 @@ import {
   UserGroupIcon
 } from "@heroicons/react/24/outline";
 
-// --- DUMMY DATA ---
-const DATA_PENGUMUMAN_INIT = [
-  { 
-    id: 1, 
-    judul: "Libur Awal Puasa Ramadhan", 
-    isi: "Diberitahukan kepada seluruh siswa dan staf bahwa kegiatan belajar mengajar diliburkan pada tanggal 12 Maret 2024 menyambut awal puasa.", 
-    tanggal: "2024-03-10", 
-    tipe: "Libur", 
-    target: "Semua" 
-  },
-  { 
-    id: 2, 
-    judul: "Rapat Koordinasi Wali Kelas", 
-    isi: "Mohon kehadiran Bapak/Ibu Wali Kelas X, XI, dan XII di Ruang Guru untuk membahas persiapan ujian tengah semester.", 
-    tanggal: "2024-03-15", 
-    tipe: "Penting", 
-    target: "Guru" 
-  },
-  { 
-    id: 3, 
-    judul: "Kegiatan Ekstrakurikuler Ditiadakan", 
-    isi: "Sehubungan dengan cuaca buruk, kegiatan ekskul sore ini ditiadakan demi keselamatan siswa.", 
-    tanggal: "2024-03-20", 
-    tipe: "Info", 
-    target: "Siswa" 
-  },
-];
+// --- IMPORT DATA DUMMY DARI FILE GLOBAL ---
+import { DATA_PENGUMUMAN_DUMMY } from "../../../data/dummyAdministrasi";
 
 const TIPE_OPTIONS = ["Info", "Penting", "Kegiatan", "Libur"];
 const TARGET_OPTIONS = ["Semua", "Guru", "Siswa", "Staff"];
 
 export default function Pengumuman() {
-  const [data, setData] = useState(DATA_PENGUMUMAN_INIT);
+  const [data, setData] = useState(DATA_PENGUMUMAN_DUMMY);
   const [search, setSearch] = useState("");
   const [filterTipe, setFilterTipe] = useState("Semua");
   

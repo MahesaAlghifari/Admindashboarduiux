@@ -12,14 +12,11 @@ import {
 
 // Note: Kita butuh data jurnal juga di sini untuk relasi
 import { DATA_JURNAL_DUMMY } from "../../../data/dummyPembelajaran";
-
-const DATA_JADWAL_INIT = [
-  { id: 1, jurnal_id: 1, tanggal: "2025-07-15" }, 
-  { id: 2, jurnal_id: 2, tanggal: "2025-07-16" }, 
-];
+// --- IMPORT DATA DUMMY DARI FILE GLOBAL ---
+import { DATA_JADWAL_DUMMY } from "../../../data/dummyAdministrasi";
 
 export default function Jadwal() {
-  const [jadwalData, setJadwalData] = useState(DATA_JADWAL_INIT);
+  const [jadwalData, setJadwalData] = useState(DATA_JADWAL_DUMMY);
   const [search, setSearch] = useState("");
   const [isJadwalModalOpen, setIsJadwalModalOpen] = useState(false);
   const [isEditJadwal, setIsEditJadwal] = useState(false);

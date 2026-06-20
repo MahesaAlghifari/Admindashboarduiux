@@ -86,7 +86,7 @@ export default function LoginPage() {
           </div>
 
           <div className="relative z-10 text-xs text-red-200">
-            &copy; 2026 PAUD Dashboard System
+            &copy; 2026 SS EduSphere
           </div>
         </div>
 
@@ -173,8 +173,8 @@ export default function LoginPage() {
             <div className="mt-8 pt-6 border-t border-slate-100 text-center">
                <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-2">Test Accounts</p>
                <div className="flex flex-wrap justify-center gap-2">
-                 <span className="px-2 py-1 bg-slate-100 rounded text-[10px] text-slate-600 font-mono">Kepsek: 3273011205750001 / 12051975</span>
-                 <span className="px-2 py-1 bg-slate-100 rounded text-[10px] text-slate-600 font-mono">Guru: 3204014101900003 / 01011990</span>
+                 <span className="px-2 py-1 bg-slate-100 rounded text-[10px] text-slate-600 font-mono">Kepsek: 3273011205980001 / 12051998</span>
+                 <span className="px-2 py-1 bg-slate-100 rounded text-[10px] text-slate-600 font-mono">Guru: 3204014101900003 / 15082002</span>
                </div>
             </div>
 

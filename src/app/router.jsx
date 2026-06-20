@@ -11,7 +11,7 @@ import KegiatanSiswa from "../pages/kegiatan";
 import ManajemenPengguna from "../pages/Pengguna";
 import ProfilePage from "../pages/profile/ProfilePage";
 import FinancePage from "../pages/keuangan";
-import LaporanPage from "../pages/laporan/LaporanPage";
+import LaporanPage from "../pages/laporan/index";
 
 // --- GUARD COMPONENTS ---
 
