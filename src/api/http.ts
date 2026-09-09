@@ -3,8 +3,27 @@ import {
   getAuthSession,
 } from "../auth/session";
 
+/**
+ * API Base URL
+ *
+ * Development:
+ * /backend
+ * -> diteruskan oleh Vite proxy ke:
+ * https://ssphereapigateway.ibik.cloud
+ *
+ * Production:
+ * langsung menggunakan API Gateway.
+ *
+ * VITE_API_BASE_URL tetap dapat digunakan
+ * untuk override jika dibutuhkan.
+ */
+const defaultApiBaseUrl = import.meta.env.DEV
+  ? "/backend"
+  : "https://ssphereapigateway.ibik.cloud";
+
 const apiBaseUrl = (
-  import.meta.env.VITE_API_BASE_URL ?? ""
+  import.meta.env.VITE_API_BASE_URL?.trim() ||
+  defaultApiBaseUrl
 ).replace(/\/+$/, "");
 
 export type ApiRequestInit = RequestInit & {
@@ -12,7 +31,10 @@ export type ApiRequestInit = RequestInit & {
   skipAuth?: boolean;
 };
 
-export type ApiGetInit = Omit<RequestInit, "method" | "body"> & {
+export type ApiGetInit = Omit<
+  RequestInit,
+  "method" | "body"
+> & {
   skipAuth?: boolean;
 };
 
@@ -25,16 +47,12 @@ function buildUrl(path: string) {
     ? path
     : `/${path}`;
 
-  if (!apiBaseUrl) {
-    throw new Error(
-      "VITE_API_BASE_URL belum dikonfigurasi."
-    );
-  }
-
   return `${apiBaseUrl}${normalizedPath}`;
 }
 
-async function readResponseBody(response: Response) {
+async function readResponseBody(
+  response: Response
+) {
   if (response.status === 204) {
     return null;
   }
@@ -57,7 +75,9 @@ async function readResponseBody(response: Response) {
   }
 }
 
-function formatValidationLocation(location: unknown) {
+function formatValidationLocation(
+  location: unknown
+) {
   if (!Array.isArray(location)) {
     return "";
   }
@@ -87,13 +107,18 @@ function getErrorMessage(
     if (Array.isArray(detail)) {
       return detail
         .map((item) => {
-          if (!item || typeof item !== "object") {
+          if (
+            !item ||
+            typeof item !== "object"
+          ) {
             return String(item);
           }
 
           const location =
             "loc" in item
-              ? formatValidationLocation(item.loc)
+              ? formatValidationLocation(
+                  item.loc
+                )
               : "";
 
           const message =
@@ -118,7 +143,10 @@ function getErrorMessage(
     return body.message;
   }
 
-  if (typeof body === "string" && body.trim()) {
+  if (
+    typeof body === "string" &&
+    body.trim()
+  ) {
     return body;
   }
 
@@ -128,11 +156,17 @@ function getErrorMessage(
 }
 
 function isAbortError(error: unknown) {
-  if (!error || typeof error !== "object") {
+  if (
+    !error ||
+    typeof error !== "object"
+  ) {
     return false;
   }
 
-  return "name" in error && error.name === "AbortError";
+  return (
+    "name" in error &&
+    error.name === "AbortError"
+  );
 }
 
 export class ApiError extends Error {
@@ -170,14 +204,22 @@ export async function apiRequestJson<T>(
     ? null
     : getAuthSession();
 
-  const headers = new Headers(rest.headers);
+  const headers = new Headers(
+    rest.headers
+  );
 
-  headers.set("Accept", "application/json");
+  headers.set(
+    "Accept",
+    "application/json"
+  );
 
   if (session?.accessToken) {
     headers.set(
       "Authorization",
-      `${session.tokenType?.trim() || "Bearer"} ${session.accessToken}`
+      `${
+        session.tokenType?.trim() ||
+        "Bearer"
+      } ${session.accessToken}`
     );
   }
 
@@ -185,7 +227,10 @@ export async function apiRequestJson<T>(
     jsonBody !== undefined &&
     !headers.has("Content-Type")
   ) {
-    headers.set("Content-Type", "application/json");
+    headers.set(
+      "Content-Type",
+      "application/json"
+    );
   }
 
   const url = buildUrl(path);
@@ -197,17 +242,19 @@ export async function apiRequestJson<T>(
       ...rest,
       method,
       headers,
+
       cache:
         rest.cache ??
-        (method === "GET" ? "no-store" : undefined),
+        (method === "GET"
+          ? "no-store"
+          : undefined),
+
       body:
         jsonBody !== undefined
           ? JSON.stringify(jsonBody)
           : rest.body,
     });
   } catch (error) {
-    // Preserve AbortError so TanStack Query/fetch consumers know
-    // this request was intentionally cancelled, not a network failure.
     if (isAbortError(error)) {
       throw error;
     }
@@ -217,7 +264,8 @@ export async function apiRequestJson<T>(
     );
   }
 
-  const body = await readResponseBody(response);
+  const body =
+    await readResponseBody(response);
 
   if (!response.ok) {
     if (
