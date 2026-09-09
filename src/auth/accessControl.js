@@ -1,0 +1,29 @@
+const normalize=value=>String(value??"").trim().toLocaleLowerCase("id").replace(/[_-]+/g," ").replace(/\s+/g," ");
+const title=value=>String(value??"").trim().replace(/\s+/g," ").replace(/\b\w/g,char=>char.toUpperCase());
+const FULL_ACCESS_POSITIONS=new Set(["ketua yayasan","kepala sekolah","chairman","headmaster","principal"]),FULL_ACCESS_ROLES=new Set(["ketua yayasan","kepala sekolah","yayasan","chairman","headmaster","principal"]),ADMIN_ROLES=new Set(["admin","administrator"]),TEACHER_ROLES=new Set(["guru","teacher"]),STORAGE_KEY="school_sphere_access_control",CHANGE_EVENT="school-sphere-access-control-change",VERSION=2;
+
+export const FEATURE=Object.freeze({DASHBOARD:"dashboard",USERS:"users",USER_MANAGEMENT:"user-management",ADMINISTRATION:"administration",ACADEMIC:"academic",FINANCE:"finance",REPORTS:"reports",SETTINGS:"settings",PROFILE:"profile"});
+export const ACCESS_FEATURES=Object.freeze([{id:FEATURE.DASHBOARD,label:"Dashboard"},{id:FEATURE.USERS,label:"Data Pengguna"},{id:FEATURE.USER_MANAGEMENT,label:"Manajemen Pengguna"},{id:FEATURE.ADMINISTRATION,label:"Administrasi"},{id:FEATURE.ACADEMIC,label:"Akademik"},{id:FEATURE.FINANCE,label:"Keuangan"},{id:FEATURE.REPORTS,label:"Laporan"},{id:FEATURE.SETTINGS,label:"Pengaturan"},{id:FEATURE.PROFILE,label:"Profil"}]);
+export const ACCESS_POSITION_PRESETS=Object.freeze(["Kepala Sekolah","Guru","Staff","Administrasi","Bendahara","Operator","Ketua Yayasan"]);
+
+const featureIds=ACCESS_FEATURES.map(item=>item.id),all=Object.fromEntries(featureIds.map(id=>[id,true])),fromSet=set=>Object.fromEntries(featureIds.map(id=>[id,set.has(id)])),limited=fromSet(new Set([FEATURE.DASHBOARD,FEATURE.PROFILE]));
+const defaultsFor=position=>{const key=normalize(position);if(FULL_ACCESS_POSITIONS.has(key))return{...all};if(key==="guru")return fromSet(new Set([FEATURE.DASHBOARD,FEATURE.ADMINISTRATION,FEATURE.ACADEMIC,FEATURE.PROFILE]));if(key==="bendahara")return fromSet(new Set([FEATURE.DASHBOARD,FEATURE.FINANCE,FEATURE.REPORTS,FEATURE.PROFILE]));if(key==="administrasi"||key==="operator")return fromSet(new Set([FEATURE.DASHBOARD,FEATURE.USERS,FEATURE.USER_MANAGEMENT,FEATURE.ADMINISTRATION,FEATURE.ACADEMIC,FEATURE.REPORTS,FEATURE.PROFILE]));return{...limited};};
+const sanitizeFeatures=(value,fallback)=>Object.fromEntries(featureIds.map(id=>[id,typeof value?.[id]==="boolean"?value[id]:fallback[id]]));
+const emptyConfig=()=>({version:VERSION,positions:{}});
+const sanitize=value=>{const next=emptyConfig(),source=value?.positions&&typeof value.positions==="object"?value.positions:{};for(const [rawKey,features] of Object.entries(source)){const key=normalize(rawKey);if(key)next.positions[key]=sanitizeFeatures(features,defaultsFor(key));}if(!value?.positions){if(value?.teacher)next.positions.guru=sanitizeFeatures(value.teacher,defaultsFor("guru"));for(const preset of ACCESS_POSITION_PRESETS){const key=normalize(preset);if(!next.positions[key]&&value?.limited)next.positions[key]=sanitizeFeatures(value.limited,defaultsFor(preset));}}return next;};
+const read=()=>{if(typeof window==="undefined")return emptyConfig();try{const raw=window.localStorage.getItem(STORAGE_KEY);return raw?sanitize(JSON.parse(raw)):emptyConfig();}catch{return emptyConfig();}};
+const withPositions=(config,positions=[])=>{const next=sanitize(config);for(const position of positions){const key=normalize(position);if(key&&!next.positions[key])next.positions[key]=defaultsFor(position);}return next;};
+const emitChange=()=>{if(typeof window!=="undefined")window.dispatchEvent(new Event(CHANGE_EVENT));};
+const roleOf=user=>normalize(user?.role??user?.nama_role),positionOf=user=>String(user?.position??user?.jabatan??user?.nama_jabatan??user?.job_title??user?.kepegawaian?.jabatan??"").trim();
+
+export const accessPositionKey=position=>normalize(position);
+export const accessPositionLabel=position=>title(position);
+export const isAccessPositionLocked=position=>FULL_ACCESS_POSITIONS.has(normalize(position));
+export const defaultAccessForPosition=position=>defaultsFor(position);
+export function getAccessControlConfig(positions=[]){return withPositions(read(),positions);}
+export function saveAccessControlConfig(value){const next=sanitize(value);if(typeof window!=="undefined")window.localStorage.setItem(STORAGE_KEY,JSON.stringify(next));emitChange();return next;}
+export function resetAccessControlConfig(positions=[]){const next=withPositions(emptyConfig(),positions);if(typeof window!=="undefined")window.localStorage.removeItem(STORAGE_KEY);emitChange();return next;}
+export function subscribeAccessControl(listener){if(typeof window==="undefined")return()=>{};const local=()=>listener(),storage=event=>{if(!event.key||event.key===STORAGE_KEY)listener();};window.addEventListener(CHANGE_EVENT,local);window.addEventListener("storage",storage);return()=>{window.removeEventListener(CHANGE_EVENT,local);window.removeEventListener("storage",storage);};}
+export function accessLevelOf(user){const role=roleOf(user),position=normalize(positionOf(user));if(FULL_ACCESS_POSITIONS.has(position)||FULL_ACCESS_ROLES.has(role))return"leadership";if(ADMIN_ROLES.has(role))return"admin";if(position)return position;if(TEACHER_ROLES.has(role))return"guru";return"limited";}
+export function canAccess(user,feature){const role=roleOf(user),position=positionOf(user);if(FULL_ACCESS_POSITIONS.has(normalize(position))||FULL_ACCESS_ROLES.has(role)||ADMIN_ROLES.has(role))return true;const effectivePosition=position||(TEACHER_ROLES.has(role)?"Guru":""),key=normalize(effectivePosition),config=read(),features=config.positions[key]??defaultsFor(effectivePosition);return Boolean(features?.[feature]);}
+export function accessLabelOf(user){const level=accessLevelOf(user);if(level==="leadership")return"Pimpinan";if(level==="admin")return"Admin";const position=positionOf(user);return position||"Pengguna";}
