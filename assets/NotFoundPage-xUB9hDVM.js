@@ -1,0 +1,1 @@
+import{j as e}from"./index-CbExjZeZ.js";import"./react-CJLMTRQJ.js";function r(){return e.jsx("div",{className:"min-h-screen flex items-center justify-center",children:"404 - Page Not Found"})}export{r as default};
