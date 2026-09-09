@@ -143,16 +143,16 @@ function StatCard({ icon: Icon, label, value, detail, tone = "slate", }) {
           <Icon className="h-[18px] w-[18px]"/>
         </span>
 
-        <span className="text-right text-[9px] leading-4 text-slate-400">
+        <span className="text-right text-[11px] leading-4 text-slate-400">
           {detail}
         </span>
       </div>
 
       <div className="mt-4">
-        <p className={`text-[24px] font-semibold leading-none tracking-[-0.03em] ${style.value}`}>
+        <p className={`text-[26px] font-semibold leading-none tracking-[-0.03em] ${style.value}`}>
           {value}
         </p>
-        <p className="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+        <p className="mt-2 text-[12px] font-semibold uppercase tracking-wide text-slate-400">
           {label}
         </p>
       </div>
@@ -163,13 +163,13 @@ function SectionGroup({ eyebrow, title, description, children, }) {
       <div className="flex items-start gap-3">
         <span className="mt-0.5 h-8 w-1 shrink-0 rounded-full bg-[#ef4d45]"/>
         <div>
-          {eyebrow && (<p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#ef4d45]">
+          {eyebrow && (<p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#ef4d45]">
               {eyebrow}
             </p>)}
-          <h2 className="mt-0.5 text-[13px] font-semibold text-slate-800">
+          <h2 className="mt-0.5 text-[15px] font-semibold text-slate-800">
             {title}
           </h2>
-          {description && (<p className="mt-1 text-[10px] leading-4 text-slate-400">
+          {description && (<p className="mt-1 text-[12px] leading-4 text-slate-400">
               {description}
             </p>)}
         </div>
@@ -192,10 +192,10 @@ function OperationalBanner({ operational, }) {
 
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-[12px] font-semibold text-slate-800">
+              <h2 className="text-[14px] font-semibold text-slate-800">
                 {operational.day_label}
               </h2>
-              <span className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold ${operational.school_day
+              <span className={`rounded-full border px-2 py-0.5 text-[11px] font-semibold ${operational.school_day
             ? "border-emerald-100 bg-emerald-50 text-emerald-600"
             : "border-amber-100 bg-amber-50 text-amber-600"}`}>
                 {operational.school_day
@@ -204,13 +204,13 @@ function OperationalBanner({ operational, }) {
               </span>
             </div>
 
-            <p className="mt-1 max-w-2xl text-[10px] leading-4 text-slate-400">
+            <p className="mt-1 max-w-2xl text-[12px] leading-4 text-slate-400">
               {operational.day_description}
             </p>
           </div>
         </div>
 
-        <div className="flex shrink-0 flex-wrap items-center gap-2 text-[10px] text-slate-400">
+        <div className="flex shrink-0 flex-wrap items-center gap-2 text-[12px] text-slate-400">
           <span className="rounded-lg border border-slate-100 bg-white px-2.5 py-1.5">
             {formatToday()}
           </span>
@@ -231,10 +231,10 @@ function PeriodCard({ period, onManage }) {
         return (<div className="rounded-xl border border-slate-100 bg-white p-4">
         <div className="flex h-full min-h-52 flex-col items-center justify-center text-center">
           <CalendarDaysIcon className="h-7 w-7 text-slate-300"/>
-          <h3 className="mt-3 text-[12px] font-semibold text-slate-700">
+          <h3 className="mt-3 text-[14px] font-semibold text-slate-700">
             Periode akademik belum aktif
           </h3>
-          <p className="mt-1 max-w-xs text-[10px] leading-4 text-slate-400">
+          <p className="mt-1 max-w-xs text-[12px] leading-4 text-slate-400">
             Aktifkan periode untuk menentukan tahun
             ajar, semester, dan hari belajar.
           </p>
@@ -252,14 +252,14 @@ function PeriodCard({ period, onManage }) {
           </span>
 
           <div>
-            <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Periode Akademik Aktif
             </p>
-            <h3 className="mt-1 text-[14px] font-semibold text-slate-800">
+            <h3 className="mt-1 text-[16px] font-semibold text-slate-800">
               {period.tahun_ajaran} · Semester{" "}
               {period.semester}
             </h3>
-            <p className="mt-0.5 text-[10px] text-slate-400">
+            <p className="mt-0.5 text-[12px] text-slate-400">
               {period.nama_periode ||
             "Periode berjalan"}
             </p>
@@ -275,37 +275,37 @@ function PeriodCard({ period, onManage }) {
       <div className="p-4">
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <div className="rounded-lg bg-slate-50/70 px-3 py-2.5">
-            <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Mulai
             </p>
-            <p className="mt-1 text-[11px] font-semibold text-slate-700">
+            <p className="mt-1 text-[13px] font-semibold text-slate-700">
               {formatDate(period.tanggal_mulai)}
             </p>
           </div>
 
           <div className="rounded-lg bg-slate-50/70 px-3 py-2.5">
-            <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Selesai
             </p>
-            <p className="mt-1 text-[11px] font-semibold text-slate-700">
+            <p className="mt-1 text-[13px] font-semibold text-slate-700">
               {formatDate(period.tanggal_selesai)}
             </p>
           </div>
 
           <div className="rounded-lg bg-slate-50/70 px-3 py-2.5">
-            <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Hari Belajar
             </p>
-            <p className="mt-1 text-[11px] font-semibold text-slate-700">
+            <p className="mt-1 text-[13px] font-semibold text-slate-700">
               {period.total_learning_days} hari
             </p>
           </div>
 
           <div className="rounded-lg bg-slate-50/70 px-3 py-2.5">
-            <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Tersisa
             </p>
-            <p className="mt-1 text-[11px] font-semibold text-emerald-600">
+            <p className="mt-1 text-[13px] font-semibold text-emerald-600">
               {period.remaining_learning_days} hari
             </p>
           </div>
@@ -313,10 +313,10 @@ function PeriodCard({ period, onManage }) {
 
         <div className="mt-4">
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[10px] font-medium text-slate-500">
+            <span className="text-[12px] font-medium text-slate-500">
               Progres hari belajar
             </span>
-            <span className="text-[10px] font-semibold text-slate-600">
+            <span className="text-[12px] font-semibold text-slate-600">
               {period.elapsed_learning_days}/
               {period.total_learning_days} ·{" "}
               {period.progress_percent}%
@@ -341,53 +341,53 @@ function CurriculumCard({ curriculum, onChange, }) {
           </span>
 
           <div>
-            <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Kurikulum Aktif
             </p>
-            <h3 className="mt-1 text-[14px] font-semibold text-slate-800">
+            <h3 className="mt-1 text-[16px] font-semibold text-slate-800">
               {curriculum?.nama_kurikulum ||
             "Belum ada kurikulum aktif"}
             </h3>
-            <p className="mt-0.5 text-[10px] text-slate-400">
+            <p className="mt-0.5 text-[12px] text-slate-400">
               {curriculum?.tahun_ajaran ||
             "Tahun ajaran belum ditentukan"}
             </p>
           </div>
         </div>
 
-        <span className="rounded-full border border-emerald-100 bg-emerald-50 px-2 py-0.5 text-[9px] font-semibold text-emerald-600">
+        <span className="rounded-full border border-emerald-100 bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-600">
           Terpilih
         </span>
       </div>
 
       <div className="flex flex-1 flex-col p-4">
-        <p className="min-h-12 text-[10px] leading-5 text-slate-500">
+        <p className="min-h-12 text-[12px] leading-5 text-slate-500">
           {curriculum?.deskripsi ||
             "Pilih kurikulum aktif agar kelas dan indikator pembelajaran memiliki acuan yang konsisten."}
         </p>
 
         <div className="mt-4 grid grid-cols-2 gap-2">
           <div className="rounded-lg border border-slate-100 bg-slate-50/60 px-3 py-2.5">
-            <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Mata Pelajaran
             </p>
-            <p className="mt-1 text-[13px] font-semibold text-slate-700">
+            <p className="mt-1 text-[15px] font-semibold text-slate-700">
               {curriculum?.mata_pelajaran?.length ?? 0}
             </p>
           </div>
 
           <div className="rounded-lg border border-slate-100 bg-slate-50/60 px-3 py-2.5">
-            <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Indikator
             </p>
-            <p className="mt-1 text-[13px] font-semibold text-slate-700">
+            <p className="mt-1 text-[15px] font-semibold text-slate-700">
               {curriculum?.indikator_ids?.length ?? 0}
             </p>
           </div>
         </div>
 
         <div className="mt-auto pt-4">
-          <button type="button" onClick={onChange} className="flex h-9 w-full items-center justify-between rounded-lg border border-slate-100 bg-slate-50/60 px-3 text-[10px] font-semibold text-slate-600 transition hover:border-red-100 hover:bg-red-50/50 hover:text-[#ef4d45]">
+          <button type="button" onClick={onChange} className="flex h-9 w-full items-center justify-between rounded-lg border border-slate-100 bg-slate-50/60 px-3 text-[12px] font-semibold text-slate-600 transition hover:border-red-100 hover:bg-red-50/50 hover:text-[#ef4d45]">
             Ganti / kelola kurikulum
             <ArrowRightIcon className="h-3.5 w-3.5"/>
           </button>
@@ -404,10 +404,10 @@ function AnnouncementCard({ announcements, onOpen, }) {
           </span>
 
           <div>
-            <h3 className="text-[11px] font-semibold text-slate-700">
+            <h3 className="text-[13px] font-semibold text-slate-700">
               Kalender & Pengumuman
             </h3>
-            <p className="mt-0.5 text-[9px] text-slate-400">
+            <p className="mt-0.5 text-[11px] text-slate-400">
               Informasi terdekat dari hari ini
             </p>
           </div>
@@ -424,12 +424,12 @@ function AnnouncementCard({ announcements, onOpen, }) {
             const tone = announcementTone(item.tipe);
             return (<div key={`${item.id}-${item.tanggal_terbit}`} className="flex items-start gap-3 px-4 py-3 transition hover:bg-slate-50/50">
                 <div className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-lg border border-slate-100 bg-slate-50/70">
-                  <span className="text-[15px] font-semibold leading-none text-slate-700">
+                  <span className="text-[17px] font-semibold leading-none text-slate-700">
                     {formatDate(item.tanggal_terbit, {
                     day: "2-digit",
                 })}
                   </span>
-                  <span className="mt-1 text-[8px] font-semibold uppercase text-slate-400">
+                  <span className="mt-1 text-[10px] font-semibold uppercase text-slate-400">
                     {formatDate(item.tanggal_terbit, {
                     month: "short",
                 })}
@@ -438,22 +438,22 @@ function AnnouncementCard({ announcements, onOpen, }) {
 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-2">
-                    <p className="line-clamp-1 text-[11px] font-semibold text-slate-700">
+                    <p className="line-clamp-1 text-[13px] font-semibold text-slate-700">
                       {item.judul}
                     </p>
-                    <span className={`shrink-0 rounded-full border px-1.5 py-0.5 text-[8px] font-semibold ${tone.badge}`}>
+                    <span className={`shrink-0 rounded-full border px-1.5 py-0.5 text-[10px] font-semibold ${tone.badge}`}>
                       {item.tipe}
                     </span>
                   </div>
 
-                  <p className="mt-1 line-clamp-2 text-[9px] leading-4 text-slate-400">
+                  <p className="mt-1 line-clamp-2 text-[11px] leading-4 text-slate-400">
                     {item.isi || "Tanpa deskripsi"}
                   </p>
                 </div>
               </div>);
         })) : (<div className="px-4 py-10 text-center">
             <CalendarDaysIcon className="mx-auto h-6 w-6 text-slate-300"/>
-            <p className="mt-2 text-[10px] font-medium text-slate-500">
+            <p className="mt-2 text-[12px] font-medium text-slate-500">
               Belum ada pengumuman mendatang
             </p>
           </div>)}
@@ -496,12 +496,12 @@ function ReminderCard({ item, icon: Icon, onOpen, onCheck, checking, }) {
             <div>
               <div className="flex items-center gap-1.5">
                 <Icon className="h-3.5 w-3.5 text-slate-400"/>
-                <h4 className="text-[11px] font-semibold text-slate-700">
+                <h4 className="text-[13px] font-semibold text-slate-700">
                   {item?.label || "Memeriksa..."}
                 </h4>
               </div>
 
-              <p className="mt-1.5 min-h-8 text-[9px] leading-4 text-slate-400">
+              <p className="mt-1.5 min-h-8 text-[11px] leading-4 text-slate-400">
                 {item?.detail ||
             "Mengambil status pengisian hari ini."}
               </p>
@@ -510,7 +510,7 @@ function ReminderCard({ item, icon: Icon, onOpen, onCheck, checking, }) {
             {item &&
             item.state !==
                 "not-required" &&
-            !unchecked && (<span className={`shrink-0 rounded-full border px-2 py-0.5 text-[8px] font-semibold ${complete
+            !unchecked && (<span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${complete
                 ? "border-emerald-100 bg-emerald-50 text-emerald-600"
                 : item.state === "error"
                     ? "border-rose-100 bg-rose-50 text-rose-600"
@@ -524,11 +524,11 @@ function ReminderCard({ item, icon: Icon, onOpen, onCheck, checking, }) {
           </div>
 
           <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-100 pt-2.5">
-            {unchecked ? (<button type="button" onClick={onCheck} disabled={checking} className="text-[9px] font-semibold text-[#ef4d45] hover:underline disabled:opacity-50">
+            {unchecked ? (<button type="button" onClick={onCheck} disabled={checking} className="text-[11px] font-semibold text-[#ef4d45] hover:underline disabled:opacity-50">
                 {checking
                 ? "Memeriksa..."
                 : "Periksa sekarang"}
-              </button>) : (<span className="text-[9px] text-slate-400">
+              </button>) : (<span className="text-[11px] text-slate-400">
                 {item &&
                 item.expected > 0 &&
                 item.state !==
@@ -537,7 +537,7 @@ function ReminderCard({ item, icon: Icon, onOpen, onCheck, checking, }) {
                 : "Status hari ini"}
               </span>)}
 
-            <button type="button" onClick={onOpen} className="inline-flex items-center gap-1 text-[9px] font-semibold text-slate-500 hover:text-[#ef4d45]">
+            <button type="button" onClick={onOpen} className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-500 hover:text-[#ef4d45]">
               Buka modul
               <ChevronRightIcon className="h-3 w-3"/>
             </button>
@@ -558,17 +558,17 @@ function ReminderSection({ reminders, loading, forceCommunication, onForceCommun
         <div>
           <div className="flex items-center gap-2">
             <CheckCircleIcon className="h-4 w-4 text-slate-400"/>
-            <h3 className="text-[11px] font-semibold text-slate-700">
+            <h3 className="text-[13px] font-semibold text-slate-700">
               Checklist Operasional Hari Ini
             </h3>
           </div>
-          <p className="mt-1 text-[9px] text-slate-400">
+          <p className="mt-1 text-[11px] text-slate-400">
             Pengingat pengisian data rutin kelas
             aktif.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-[9px] text-slate-400">
+        <div className="flex items-center gap-2 text-[11px] text-slate-400">
           {checkedAt && (<span>
               Dicek {formatTime(checkedAt)}
             </span>)}
@@ -593,11 +593,11 @@ function PaymentTable({ payments, onOpen, loading = false, error = false, }) {
         <div>
           <div className="flex items-center gap-2">
             <BanknotesIcon className="h-4 w-4 text-slate-400"/>
-            <h3 className="text-[11px] font-semibold text-slate-700">
+            <h3 className="text-[13px] font-semibold text-slate-700">
               Transaksi Pembayaran Terakhir
             </h3>
           </div>
-          <p className="mt-0.5 text-[9px] text-slate-400">
+          <p className="mt-0.5 text-[11px] text-slate-400">
             Pemasukan terbaru dari modul keuangan.
           </p>
         </div>
@@ -619,7 +619,7 @@ function PaymentTable({ payments, onOpen, loading = false, error = false, }) {
             "Jumlah",
             "Tanggal",
             "Status",
-        ].map((label) => (<th key={label} className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+        ].map((label) => (<th key={label} className="px-3 py-2.5 text-left text-[12px] font-semibold uppercase tracking-wide text-slate-400">
                   {label}
                 </th>))}
             </tr>
@@ -632,43 +632,43 @@ function PaymentTable({ payments, onOpen, loading = false, error = false, }) {
                       </td>))}
                 </tr>))) : payments.length ? (payments.map((item) => (<tr key={`${item.id}-${item.nomor_transaksi}`} className="hover:bg-slate-50/60">
                   <td className="px-3 py-2.5">
-                    <p className="font-mono text-[10px] font-medium text-slate-600">
+                    <p className="font-mono text-[12px] font-medium text-slate-600">
                       {item.nomor_transaksi}
                     </p>
-                    <p className="mt-0.5 text-[8px] text-slate-400">
+                    <p className="mt-0.5 text-[10px] text-slate-400">
                       {item.invoice_number ||
                 "Tanpa invoice"}
                     </p>
                   </td>
 
                   <td className="px-3 py-2.5">
-                    <p className="text-[11px] font-semibold text-slate-700">
+                    <p className="text-[13px] font-semibold text-slate-700">
                       {item.student_name}
                     </p>
-                    {item.student_nisn && (<p className="mt-0.5 text-[8px] text-slate-400">
+                    {item.student_nisn && (<p className="mt-0.5 text-[10px] text-slate-400">
                         NIS {item.student_nisn}
                       </p>)}
                   </td>
 
                   <td className="px-3 py-2.5">
-                    <p className="text-[10px] font-medium text-slate-600">
+                    <p className="text-[12px] font-medium text-slate-600">
                       {item.category}
                     </p>
-                    {item.description && (<p className="mt-0.5 max-w-60 truncate text-[8px] text-slate-400">
+                    {item.description && (<p className="mt-0.5 max-w-60 truncate text-[10px] text-slate-400">
                         {item.description}
                       </p>)}
                   </td>
 
-                  <td className="px-3 py-2.5 text-[11px] font-semibold text-emerald-600">
+                  <td className="px-3 py-2.5 text-[13px] font-semibold text-emerald-600">
                     {formatCurrency(item.amount)}
                   </td>
 
-                  <td className="px-3 py-2.5 text-[10px] text-slate-500">
+                  <td className="px-3 py-2.5 text-[12px] text-slate-500">
                     {formatDate(item.date)}
                   </td>
 
                   <td className="px-3 py-2.5">
-                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-100 bg-emerald-50 px-2 py-0.5 text-[8px] font-semibold text-emerald-600">
+                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-100 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-600">
                       <CheckCircleIcon className="h-3 w-3"/>
                       Diterima
                     </span>
@@ -676,7 +676,7 @@ function PaymentTable({ payments, onOpen, loading = false, error = false, }) {
                 </tr>))) : (<tr>
                 <td colSpan={6} className="px-4 py-10 text-center">
                   {error ? (<ExclamationCircleIcon className="mx-auto h-6 w-6 text-rose-300"/>) : (<BanknotesIcon className="mx-auto h-6 w-6 text-slate-300"/>)}
-                  <p className={`mt-2 text-[10px] font-medium ${error
+                  <p className={`mt-2 text-[12px] font-medium ${error
                 ? "text-rose-500"
                 : "text-slate-500"}`}>
                     {error
@@ -948,7 +948,7 @@ export default function DashboardPage() {
     };
     return (<div className="space-y-8 pb-4 animate-in fade-in duration-300">
       <SectionHeader icon={Squares2X2Icon} title={`Selamat datang, ${displayName}`} description="Ringkasan operasional sekolah, periode akademik, agenda, dan pekerjaan yang perlu diselesaikan hari ini." actions={<>
-            <span className="hidden text-[10px] text-slate-400 sm:inline">
+            <span className="hidden text-[12px] text-slate-400 sm:inline">
               {formatToday()}
             </span>
             <button type="button" onClick={refreshAll} disabled={isRefreshing} className="ui-toolbar-button">
@@ -962,7 +962,7 @@ export default function DashboardPage() {
       {contextQuery.data?.warnings
             ?.length > 0 && (<div className="flex items-start gap-2 rounded-lg border border-amber-100 bg-amber-50/60 px-3 py-2.5">
           <ExclamationTriangleIcon className="mt-0.5 h-4 w-4 shrink-0 text-amber-500"/>
-          <p className="text-[10px] leading-4 text-amber-700">
+          <p className="text-[12px] leading-4 text-amber-700">
             Sebagian data belum dapat dimuat:{" "}
             {contextQuery.data.warnings.join(", ")}
             . Bagian lain tetap ditampilkan.
@@ -975,10 +975,10 @@ export default function DashboardPage() {
             <div className="flex items-start gap-3">
               <ExclamationCircleIcon className="h-5 w-5 shrink-0 text-rose-500"/>
               <div>
-                <h3 className="text-[11px] font-semibold text-rose-700">
+                <h3 className="text-[13px] font-semibold text-rose-700">
                   Status operasional gagal dimuat
                 </h3>
-                <p className="mt-1 text-[10px] text-rose-500">
+                <p className="mt-1 text-[12px] text-rose-500">
                   Coba muat ulang konteks kelas dan periode.
                 </p>
                 <button type="button" onClick={() => contextQuery.refetch()} className="ui-toolbar-button mt-3">
