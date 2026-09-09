@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 import AuthProvider from "./auth/AuthProvider";
 import AppRouter from "./app/router";
@@ -14,11 +14,11 @@ ReactDOM.createRoot(
 ).render(
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <HashRouter>
         <AuthProvider>
           <AppRouter />
         </AuthProvider>
-      </BrowserRouter>
+      </HashRouter>
     </QueryClientProvider>
   </ErrorBoundary>
 );
