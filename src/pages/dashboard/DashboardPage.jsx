@@ -992,7 +992,7 @@ export default function DashboardPage() {
                 communicationQuery.isFetching} checkedAt={priorityQuery.data
                 ?.checked_at} forceCommunication={forceCommunication} onForceCommunication={() => setForceCommunication(true)} onOpen={(tab) => navigate(`/kegiatan?tab=${tab}`)}/>
 
-            <OperationalBanner operational={operational}/>
+            {/* <OperationalBanner operational={operational}/> */}
           </>)}
       </SectionGroup>
 
